@@ -48,7 +48,7 @@ module.exports.get_latest = async (event, context) => {
           const $ = cheerio.load(body);
           $('h3').each(function (i, elem) {
             if ($(this).text() == '先行販売') {
-              const text = $(this).parents().find('.txt').eq(0).text();
+              const text = $(this).parent().find('.txt').eq(0).text();
               const reg_first = /第1抽選方式：(.*)〜(.*)/;
               const reg_second = /第2抽選方式：(.*)〜(.*)/;
               const first = [parse_date(text.match(reg_first)[1], year), parse_date(text.match(reg_first)[2], year)];
