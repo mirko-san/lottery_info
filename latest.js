@@ -37,11 +37,16 @@ module.exports.get_latest = async (event, context) => {
 
     function parse_date(string, year) {
       const prese = string.replace(/（.*）/, ' ').match(/^([0-9]*?)月([0-9]*?)日\s(.+)$/);
-      // TODO : zero padding
-      return year + '-' + prese[1] + '-' + prese[2] + ' ' + prese[3];
+      function zeropadding(i) {
+        var num = ('00' + i).slice(-2);
+        return num;
+      }
+      return year + '-' + zeropadding(prese[1]) + '-' + zeropadding(prese[2]) + 'T' + prese[3] + ':00+09:00';
     }
     function get_date(url) {
-      const year = url.match(/^https:\/\/kageki.hankyu.co.jp\/revue\/([0-9]{4})\//)[1];
+      // TODO:urlからの取得だと公演期間と抽選期間のズレが吸収できない
+      // const year = url.match(/^https:\/\/kageki.hankyu.co.jp\/revue\/([0-9]{4})\//)[1];
+      const year = '2018';
       const res = {};
       return new Promise((resolve, reject) => {
         request(url, (e, response, body) => {
