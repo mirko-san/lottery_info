@@ -72,7 +72,8 @@ functions:
     handler: insert.insert
     timeout: 15
     events:
-      - schedule: cron(10 0 * * ? *)
+      # UTC+9 AM 1:00
+      - schedule: cron(0 16 * * ? *)
 #    events:
 #      - http:
 #          path: users/create
