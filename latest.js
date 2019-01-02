@@ -8,17 +8,17 @@ module.exports.get_latest = async (event, context) => {
 
   for (let i = 0; i < message.length; i++) {
     const html = await get_html(message[i].url);
-    const content = await get_each_content(html);
+    const content = await get_each_content(html, message[i].url);
     if (0 !== Object.keys(content).length) {
       message[i].first = content.first;
-      message[i].second = content.first;
+      message[i].second = content.second;
       message[i].lottery = true;
     } else {
       message[i].lottery = false;
     }
   }
 
-  function get_html(url){
+  function get_html(url) {
     const promise = new Promise(resolve => {
       request(url, (e, response, body) => {
         resolve(body);
@@ -27,13 +27,18 @@ module.exports.get_latest = async (event, context) => {
     return promise;
   };
 
-  function get_each_content(html) {
-    // TODO:urlからの取得だと公演期間と抽選期間のズレが吸収できない
-    // const year = url.match(/^https:\/\/kageki.hankyu.co.jp\/revue\/([0-9]{4})\//)[1];
-    const year = '2018';
+  function get_each_content(html, url) {
+    let year = url.match(/^https:\/\/kageki.hankyu.co.jp\/revue\/([0-9]{4})\//)[1];
 
     function parse_date(string, year) {
       const prese = string.replace(/（.*）/, ' ').match(/^([0-9]*?)月([0-9]*?)日\s(.+)$/);
+      const date = new Date();
+      let month = date.getMonth() + 1;
+
+      if (prese[1] < month) {
+        year -= 1;
+      }
+
       function zeropadding(i) {
         var num = ('00' + i).slice(-2);
         return num;

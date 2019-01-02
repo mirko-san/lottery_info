@@ -12,6 +12,7 @@
     "babel-eslint": "^10.0.1",
     "cheerio": "^1.0.0-rc.2",
     "eslint": "^5.7.0",
+    "googleapis": "^36.0.0",
     "jsdom": "^12.2.0",
     "request": "^2.88.0"
   }

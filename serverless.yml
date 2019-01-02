@@ -68,6 +68,11 @@ functions:
       - http:
           path: latest
           method: get
+  insert:
+    handler: insert.insert
+    timeout: 15
+    events:
+      - schedule: cron(10 0 * * ? *)
 #    events:
 #      - http:
 #          path: users/create
