@@ -1,3 +1,4 @@
+'use strict';
 const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
@@ -132,6 +133,8 @@ async function listEvents(auth) {
 }
 
 function insert(auth, data) {
+  console.log('[info] start function insert');
+  console.log(data);
   const calendar = google.calendar({ version: 'v3', auth });
   const event = [
     {
