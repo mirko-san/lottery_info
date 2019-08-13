@@ -22,7 +22,13 @@ module.exports.insert = async (event, context) => {
   JSON.parse(result.body).message.forEach((item, index) => {
     if (item.lottery === true) {
       console.log('[info] item.lottery === true');
-      console.log(item);
+      console.log('-----');
+      console.log('title : ' + item.title);
+      console.log('lottery : ' + item.lottery);
+      console.log('first : ' + item.first);
+      console.log('second : ' + item.second);
+      console.log('url : ' + item.url);
+      console.log('-----');
       const iShesuled = shesuled_url.some((value) => {
         return value === item.url;
       });
