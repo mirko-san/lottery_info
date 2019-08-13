@@ -100,19 +100,18 @@ async function listEvents(auth) {
     const promise = new Promise(resolve => {
       calendar.events.list(param, (err, res) => {
         if (err) return console.log('The API returned an error: ' + err);
-        const events = res.data.items;
-        if (events.length) {
+        var events = {};
+        if (res.data.items.length) {
           // console.log('Upcoming 10 events:');
           // events.map((event, i) => {
           //   const start = event.start.dateTime || event.start.date;
           //   console.log(`${event.description}`);
           // });
-          resolve(events);
+          var events = res.data.items;
         } else {
           console.log('No upcoming events found.');
-          events = {};
-          resolve(events);
         }
+        resolve(events);
       });
     });
     return promise;
