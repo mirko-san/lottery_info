@@ -4,14 +4,14 @@ const readline = require('readline');
 const { google } = require('googleapis');
 
 const constant = require('./constant');
+const CREDENTIALS = require('./credentials/credentials.json');
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/calendar'];
 const TOKEN_PATH = 'credentials/token.json';
 
 module.exports.get_list = async () => {
-  const credentials = await getCredentials('credentials/credentials.json');
-  const list = await authorize(JSON.parse(credentials), listEvents);
+  const list = await authorize(CREDENTIALS, listEvents);
 
   return new Promise(resolve => {
     resolve(JSON.stringify(list));
@@ -20,8 +20,7 @@ module.exports.get_list = async () => {
 };
 
 module.exports.insert = async (data) => {
-  const credentials = await getCredentials('credentials/credentials.json');
-  authorize(JSON.parse(credentials), insert, data);
+  authorize(CREDENTIALS, insert, data);
 };
 
 /**
@@ -80,16 +79,6 @@ function getAccessToken(oAuth2Client, callback) {
       callback(oAuth2Client);
     });
   });
-}
-
-function getCredentials(path) {
-  const promise = new Promise(resolve => {
-    fs.readFile(path, (err, content) => {
-      if (err) return console.log('Error loading client secret file:', err);
-      resolve(content);
-    });
-  });
-  return promise;
 }
 
 /**
