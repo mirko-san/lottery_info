@@ -3,7 +3,7 @@ const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
 
-const constant = require('./constant');
+const CONSTANT = require('./constant');
 const CREDENTIALS = require('./credentials/credentials.json');
 
 // If modifying these scopes, delete token.json.
@@ -88,7 +88,7 @@ function getAccessToken(oAuth2Client, callback) {
 async function listEvents(auth) {
   const calendar = google.calendar({ version: 'v3', auth });
   const param = {
-    calendarId: constant.calendarId,
+    calendarId: CONSTANT.calendarId,
     timeMin: (new Date()).toISOString(),
     maxResults: 10,
     singleEvents: true,
@@ -162,7 +162,7 @@ function insert(auth, data) {
   ];
   event.forEach(element => {
     calendar.events.insert({
-      calendarId: constant.calendarId,
+      calendarId: CONSTANT.calendarId,
       resource: element
     });
   });
