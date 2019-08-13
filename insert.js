@@ -9,9 +9,11 @@ module.exports.insert = async (event, context) => {
   const result = await latest.get_latest();
 
   // すでにカレンダーに入っている予定のurlを抽出
-  shesuled.forEach((item, index) => {
-    shesuled_url.push(item.description);
-  });
+  if(shesuled.length){
+    shesuled.forEach((item, index) => {
+      shesuled_url.push(item.description);
+    });
+  }
 
   console.log('[info] shesuled_url');
   console.log(shesuled_url);
