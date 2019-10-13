@@ -19,7 +19,7 @@ module.exports.insert = async (event, context) => {
   console.log(shesuled_url);
 
   // 予定にない情報があれば calendar.insert() する
-  JSON.parse(result.body).message.forEach((item, index) => {
+  JSON.parse(result.body).message.forEach(async (item, index) => {
     if (item.lottery === true) {
       console.log('[info] item.lottery === true');
       console.log('-----');
@@ -36,7 +36,7 @@ module.exports.insert = async (event, context) => {
         console.log('[info] !iShesuled');
         console.log(item);
         insertItem.push(item);
-        calendar.insert(item);
+        await calendar.insert(item);
       } else {
         console.log('[info] item is all shesuled');
       }

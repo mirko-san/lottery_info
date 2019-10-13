@@ -20,7 +20,7 @@ module.exports.get_list = async () => {
 };
 
 module.exports.insert = async (data) => {
-  authorize(CREDENTIALS, insert, data);
+  await authorize(CREDENTIALS, insert, data);
 };
 
 /**
