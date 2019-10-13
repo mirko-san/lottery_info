@@ -18,6 +18,11 @@ module.exports.get_latest = async (event, context) => {
     }
   }
 
+  /**
+   * 引数 url に渡されたURLのコンテンツを取得
+   * @param {*} url コンテンツを取得するURL
+   * @returns {*} promiseを返す
+   */
   function get_html(url) {
     return new Promise(resolve => {
       request(url, (e, response, body) => {
@@ -26,6 +31,12 @@ module.exports.get_latest = async (event, context) => {
     });
   };
 
+  /**
+   * 公演ごとのページのHTMLから、抽選開始日と終了日を取得する
+   * @param {*} html
+   * @param {*} url その公演のURL
+   * @returns {*} {first: [抽選開始日, 抽選終了日], second: [抽選開始日, 抽選終了日]}
+   */
   async function get_each_content(html, url) {
     let year = url.match(/^https:\/\/kageki.hankyu.co.jp\/revue\/([0-9]{4})\//)[1];
 
@@ -45,6 +56,13 @@ module.exports.get_latest = async (event, context) => {
       return year + '-' + zeropadding(prese[1]) + '-' + zeropadding(prese[2]) + 'T' + prese[3] + ':00+09:00';
     }
 
+    /**
+     * 渡されたHTMLのなかに「第1(or 2)抽選方式：」という文字列があれば、
+     * 正規表現で開始日と終了日を取得し、パースする
+     * @param {*} html
+     * @param {*} year
+     * @returns {*} {first: [抽選開始日, 抽選終了日], second: [抽選開始日, 抽選終了日]}
+     */
     function prese_each_html(html, year) {
       const $ = cheerio.load(html);
       const res = {};
@@ -69,6 +87,11 @@ module.exports.get_latest = async (event, context) => {
     return prese_each_html(html, year);
   };
 
+  /**
+   * 引数にわたされたhtmlをパースし、現在掲載されている公演情報を格納したオブジェクトを返す
+   * @param {*} html
+   * @returns {Array} 現在掲載されている公演情報を格納した配列 ex.[{title, url}]
+   */
   function perse_html(html) {
     const $ = cheerio.load(html);
     let res = [];
