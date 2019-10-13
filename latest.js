@@ -19,15 +19,14 @@ module.exports.get_latest = async (event, context) => {
   }
 
   function get_html(url) {
-    const promise = new Promise(resolve => {
+    return new Promise(resolve => {
       request(url, (e, response, body) => {
         resolve(body);
       });
     });
-    return promise;
   };
 
-  function get_each_content(html, url) {
+  async function get_each_content(html, url) {
     let year = url.match(/^https:\/\/kageki.hankyu.co.jp\/revue\/([0-9]{4})\//)[1];
 
     function parse_date(string, year) {
@@ -67,9 +66,7 @@ module.exports.get_latest = async (event, context) => {
       return res;
     }
 
-    return new Promise(resolve => {
-      resolve(prese_each_html(html, year));
-    });
+    return prese_each_html(html, year);
   };
 
   function perse_html(html) {
