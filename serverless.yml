@@ -70,7 +70,7 @@ functions:
           method: get
   insert:
     handler: insert.insert
-    timeout: 15
+    timeout: 30
     events:
       # UTC+9 AM 1:00
       - schedule: cron(0 16 * * ? *)
