@@ -4,11 +4,11 @@ const cheerio = require('cheerio');
 
 module.exports.get_latest = async (event, context) => {
   const html = await get_html('https://kageki.hankyu.co.jp/revue/index.html');
-  let message = perse_html(html);
+  let message = parse_html(html);
 
   for (let i = 0; i < message.length; i++) {
     const html = await get_html(message[i].url);
-    const content = await get_each_content(html, message[i].url);
+    const content = parse_each_content(html, message[i].url);
     if (0 !== Object.keys(content).length) {
       message[i].first = content.first;
       message[i].second = content.second;
@@ -37,7 +37,7 @@ module.exports.get_latest = async (event, context) => {
    * @param {*} url その公演のURL
    * @returns {*} {first: [抽選開始日, 抽選終了日], second: [抽選開始日, 抽選終了日]}
    */
-  async function get_each_content(html, url) {
+  function parse_each_content(html, url) {
     let year = url.match(/^https:\/\/kageki.hankyu.co.jp\/revue\/([0-9]{4})\//)[1];
 
     function parse_date(string, year) {
@@ -92,7 +92,7 @@ module.exports.get_latest = async (event, context) => {
    * @param {*} html
    * @returns {Array} 現在掲載されている公演情報を格納した配列 ex.[{title, url}]
    */
-  function perse_html(html) {
+  function parse_html(html) {
     const $ = cheerio.load(html);
     let res = [];
     $('.item_content1').each(function (i, elem) {
