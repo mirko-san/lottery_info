@@ -120,10 +120,10 @@ async function listEvents(auth) {
   return result;
 }
 
-function insert(auth, data) {
+async function insert(auth, data) {
   console.log('[info] start function insert');
   console.log(data);
-  const calendar = google.calendar({ version: 'v3', auth });
+  const calendar = await google.calendar({ version: 'v3', auth });
   const event = [
     {
       location: '〒100-0006 東京都千代田区有楽町１丁目１−３ 東京宝塚ビル内',
@@ -160,8 +160,8 @@ function insert(auth, data) {
       }
     }
   ];
-  event.forEach(element => {
-    calendar.events.insert({
+  event.forEach(async element => {
+    await calendar.events.insert({
       calendarId: CONSTANT.calendarId,
       resource: element
     });
